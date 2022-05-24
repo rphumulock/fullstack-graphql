@@ -5,7 +5,7 @@ import NewPet from "../components/NewPet";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import Loader from "../components/Loader";
 
-const ALL_PETS_QUERY = gql`
+const ALL_PETS = gql`
   query AllPets {
     pets {
       id
@@ -16,7 +16,7 @@ const ALL_PETS_QUERY = gql`
   }
 `;
 
-const CREATE_PET_MUTATION = gql`
+const NEW_PET = gql`
   mutation CreateAPet($newPet: NewPetInput!) {
     addPet(input: $newPet) {
       id
@@ -29,8 +29,16 @@ const CREATE_PET_MUTATION = gql`
 
 export default function Pets() {
   const [modal, setModal] = useState(false);
-  const allPetsResult = useQuery(ALL_PETS_QUERY);
-  const [createPet, createPetResult] = useMutation(CREATE_PET_MUTATION);
+  const allPetsResult = useQuery(ALL_PETS);
+  const [createPet, createPetResult] = useMutation(NEW_PET, {
+    update(cache, { data: { addPet } }) {
+      const data = cache.readQuery({ query: ALL_PETS });
+      cache.writeQuery({
+        query: ALL_PETS,
+        data: { pets: [addPet, ...data.pets] },
+      });
+    },
+  });
 
   if (allPetsResult.loading || createPetResult.loading) {
     return <Loader />;
