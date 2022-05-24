@@ -3,5 +3,48 @@
     "id": "jBWMVGjm50l6LGwepDoty",
     "username": "frontendmaster"
   },
-  "pet": []
+  "pet": [
+    {
+      "id": "qrvtrkkJpF8mnwws3K2i5",
+      "createdAt": 1653409561115,
+      "name": "C",
+      "type": "CAT",
+      "user": "jBWMVGjm50l6LGwepDoty"
+    },
+    {
+      "id": "74wGqN2BTWx2k2EDqzJlI",
+      "createdAt": 1653409561506,
+      "name": "C",
+      "type": "CAT",
+      "user": "jBWMVGjm50l6LGwepDoty"
+    },
+    {
+      "id": "HtrYB98ktzM0YH1Ji_bTx",
+      "createdAt": 1653409561818,
+      "name": "C",
+      "type": "CAT",
+      "user": "jBWMVGjm50l6LGwepDoty"
+    },
+    {
+      "id": "kXoawQlrLIcauTVHsXtga",
+      "createdAt": 1653409562140,
+      "name": "C",
+      "type": "CAT",
+      "user": "jBWMVGjm50l6LGwepDoty"
+    },
+    {
+      "id": "rVdGIf89o1NUWVx8YX3P-",
+      "createdAt": 1653411555775,
+      "name": "C",
+      "type": "CAT",
+      "user": "jBWMVGjm50l6LGwepDoty"
+    },
+    {
+      "id": "QcnOSTSMk7IBrEwI34mCD",
+      "createdAt": 1653411556504,
+      "name": "C",
+      "type": "CAT",
+      "user": "jBWMVGjm50l6LGwepDoty"
+    }
+  ]
 }
