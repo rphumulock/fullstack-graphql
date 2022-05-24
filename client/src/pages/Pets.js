@@ -16,23 +16,38 @@ const ALL_PETS_QUERY = gql`
   }
 `;
 
+const CREATE_PET_MUTATION = gql`
+  mutation CreateAPet($newPet: NewPetInput!) {
+    addPet(input: $newPet) {
+      id
+      name
+      __typename
+      img
+    }
+  }
+`;
+
 export default function Pets() {
   const [modal, setModal] = useState(false);
-  const { data, loading, error } = useQuery(ALL_PETS_QUERY);
+  const allPetsResult = useQuery(ALL_PETS_QUERY);
+  const [createPet, createPetResult] = useMutation(CREATE_PET_MUTATION);
 
-  if (loading) {
+  if (allPetsResult.loading || createPetResult.loading) {
     return <Loader />;
   }
 
-  if (error) {
+  if (allPetsResult.error || createPetResult.error) {
     return <p>Error!</p>;
   }
 
   const onSubmit = (input) => {
+    createPet({
+      variables: { newPet: input },
+    });
     setModal(false);
   };
 
-  const petsList = data.pets.map((pet) => (
+  const petsList = allPetsResult.data.pets.map((pet) => (
     <div className="col-xs-12 col-md-4 col" key={pet.id}>
       <div className="box">
         <PetBox pet={pet} />
