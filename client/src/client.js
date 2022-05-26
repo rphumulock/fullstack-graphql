@@ -1,25 +1,25 @@
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
-import gql from "graphql-tag";
+import { ApolloLink } from "apollo-link";
+import { setContext } from "apollo-link-context";
 
+const delay = setContext(
+  (request) =>
+    new Promise((success, fail) => {
+      setTimeout(() => {
+        success();
+      }, 800);
+    })
+);
+
+const http = new HttpLink({ uri: "http://localhost:4000/" });
+const link = ApolloLink.from([delay, http]);
+const cache = new InMemoryCache();
 const client = new ApolloClient({
-  link: new HttpLink({ uri: "http://localhost:4000/" }),
-  cache: new InMemoryCache(),
+  link,
+  cache,
   connectToDevTools: true,
 });
-
-const query = gql`
-  {
-    characters {
-      results {
-        id
-        name
-      }
-    }
-  }
-`;
-
-// client.query({ query }).then((r) => console.log(r));
 
 export default client;
