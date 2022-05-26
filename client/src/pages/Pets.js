@@ -1,30 +1,40 @@
-import React, { useState } from "react";
-import gql from "graphql-tag";
-import PetBox from "../components/PetBox";
-import NewPet from "../components/NewPet";
-import { useQuery, useMutation } from "@apollo/react-hooks";
-import Loader from "../components/Loader";
+import React, { useState } from 'react';
+import gql from 'graphql-tag';
+import PetBox from '../components/PetBox';
+import NewPet from '../components/NewPet';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import Loader from '../components/Loader';
+
+const PETS_FIELDS = gql`
+  fragment PetsFields on Pet {
+    id
+    name
+    __typename
+    img
+    vaccinated @client
+    owner {
+      id
+      age @client
+    }
+  }
+`;
 
 const ALL_PETS = gql`
   query AllPets {
     pets {
-      id
-      name
-      __typename
-      img
+      ...PetsFields
     }
   }
+  ${PETS_FIELDS}
 `;
 
 const NEW_PET = gql`
   mutation CreateAPet($newPet: NewPetInput!) {
     addPet(input: $newPet) {
-      id
-      name
-      __typename
-      img
+      ...PetsFields
     }
   }
+  ${PETS_FIELDS}
 `;
 
 export default function Pets() {
@@ -52,13 +62,14 @@ export default function Pets() {
     createPet({
       variables: { newPet: input },
       optimisticResponse: {
-        __typename: "Mutation",
+        __typename: 'Mutation',
         addPet: {
-          __typename: "Pet",
+          __typename: 'Pet',
           id: `$Math.floor(Math.random() * 10000)}`,
           name: input.name,
           type: input.type,
-          img: "https://via.placeholder.com/300",
+          img: 'https://via.placeholder.com/300',
+          owner: {},
         },
       },
     });
